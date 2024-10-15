@@ -3,6 +3,25 @@
 # Uncomment and change the variables below to your need:#
 #########################################################
 
+# Change dir and setting for Casdao platform
+models_dir="$HOME/fssd/models"
+clip_models_path="$models_dir/CLIP"
+vae_dir="$models_dir/VAE"
+
+export GRADIO_TEMP_DIR="$HOME/fssd/tmp/"
+export HUGGINGFACE_HUB_CACHE="$HOME/fssd/HF_cache"
+export HF_HOME="$HOME/fssd/HF"
+export HF_HUB_ENABLE_HF_TRANSFER=1
+
+# Copy files and models from folder of the scipts to the fssd for Casdao platform
+if [ ! -d $models_dir ]
+then
+    echo "################################################################"
+    echo "Copy models folder from $HOME/stable-diffusion-webui to fssd ..."
+    time cp -r -n $HOME/stable-diffusion-webui/models $HOME/fssd
+    echo "################################################################"
+fi
+
 # Install directory without trailing slash
 #install_dir="/home/$(whoami)"
 
@@ -10,7 +29,7 @@
 #clone_dir="stable-diffusion-webui"
 
 # Commandline arguments for webui.py, for example: export COMMANDLINE_ARGS="--medvram --opt-split-attention"
-#export COMMANDLINE_ARGS=""
+export COMMANDLINE_ARGS="--listen --skip-prepare-environment --xformers --models-dir $models_dir --clip-models-path $clip_models_path --vae-dir $vae_dir --enable-insecure-extension-access"
 
 # python3 executable
 #python_cmd="python3"
@@ -19,10 +38,10 @@
 #export GIT="git"
 
 # python3 venv without trailing slash (defaults to ${install_dir}/${clone_dir}/venv)
-#venv_dir="venv"
+venv_dir="-"
 
 # script to launch to start the app
-#export LAUNCH_SCRIPT="launch.py"
+export LAUNCH_SCRIPT="launch.py"
 
 # install command for torch
 #export TORCH_COMMAND="pip install torch==1.12.1+cu113 --extra-index-url https://download.pytorch.org/whl/cu113"
@@ -40,7 +59,7 @@
 #export BLIP_COMMIT_HASH=""
 
 # Uncomment to enable accelerated launch
-#export ACCELERATE="True"
+export ACCELERATE="True"
 
 # Uncomment to disable TCMalloc
 #export NO_TCMALLOC="True"
